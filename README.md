@@ -4,8 +4,20 @@ kmee
 
 kmeee
 
-    int main(int argc, string argv[])
-    {
+    /*
+Vigenereova šifra: https://www.youtube.com/watch?v=9zASwVoshiM
+*/
+
+#include <stdio.h>
+#include <cs50.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+int kljuc(int slovoteksta, char c, string k);
+
+int main(int argc, string argv[])
+{
     //samo jedan argument!
     if( argc != 2 )
     {
@@ -13,44 +25,61 @@ kmeee
     return 1;
     }
     
-    //zatraži ulazni tekst
-    string s = GetString();
     string k = argv[1];
     
-        //prva for-petlja:iterira kroz tekst
-        for(int i = 0, m = strlen(s); i < m; i++)
-        {   
-            int kj;
-            //druga for-petlja: iterira kroz ključ
-            for(int j = 0, n = strlen(k); j < n; j++)
-            {
-            int d = (int)k[j];
+    //argument mora biti slovo abecede!
+    for(int i = 0, n = strlen(k); i < n; i++)
+    {
+        if(!isalpha(k[i]))
+        {
+        printf("error\n");
+        return 1;
+        }
+    }
+    
+    //zatraži ulazni tekst
+    string s = GetString();
+    
+    int slovoteksta = 0;
+    
+    for(int i = 0, m = strlen(s); i < m; i++)
+    {
+        char c = s[i]; 
         
-            if(d >= 97 && d <= 122)
-            kj = d - 'a';
-            
-            else if(d >= 65 && d <= 90)
-            kj = d - 'A';
-            //alphabetical only
-             else
-            {
-            printf("error\n");
-            return 1;
-            }
-            //if-then, do-while??
-            }
+        if(islower(c))
+        {
+        printf("%c", (c - 'a' + kljuc(slovoteksta,c,k)) % 26 + 'a');
+        slovoteksta++;
+        }
         
-        int c = (int)s[i];
-        
-        if(c >= 97 && c <= 122)
-        printf("%c", (c - 'a' + kj) % 26 + 'a');
-        
-        else if(c >= 65 && c <= 90)
-        printf("%c", (c - 'A' + kj) % 26 + 'A');
+        else if(isupper(c))
+        {
+        printf("%c", (c - 'A' + kljuc(slovoteksta,c,k)) % 26 + 'A');
+        slovoteksta++;
+        }
         
         else
         printf("%c", c);
-    
-        }
-        printf("\n");
+     }
+    printf("\n");
+}
+
+//ključ!
+int kljuc(int slovoteksta, char c, string k)
+{
+    int kj;
+    int n = strlen(k);
+    int slovoključa = k[slovoteksta % n];
+                
+    if(islower(slovoključa))
+    {
+    kj = slovoključa - 'a';
     }
+    
+    else(isupper(slovoključa));
+    {
+    kj = slovoključa - 'A';
+    }
+    
+    return kj;
+}
