@@ -37,9 +37,8 @@ kmeee
             printf("error\n");
             return 1;
             }
-        
-        
-        }
+            //if-then, do-while??
+            }
         
         int c = (int)s[i];
         
